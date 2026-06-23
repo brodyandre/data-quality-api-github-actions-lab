@@ -15,6 +15,7 @@
 - [Arquitetura](#arquitetura)
 - [Tecnologias](#tecnologias)
 - [Como rodar](#como-rodar)
+- [Endpoints](#endpoints)
 - [Workflows](#workflows)
 - [Debug e logs](#debug-e-logs)
 - [Service containers](#service-containers)
@@ -46,7 +47,7 @@ Os principais temas previstos nesta trilha são:
 
 ## Arquitetura
 
-O laboratório será organizado para manter separação clara entre aplicação, banco, automação e documentação. A base inicial já prepara backend, frontend, banco, scripts e espaço dedicado para troubleshooting e evidências.
+O laboratório está organizado para manter separação clara entre aplicação, banco, automação e documentação. A base atual já inclui backend FastAPI com SQL simples, scripts de migração e seeds, além de espaço dedicado para troubleshooting e evidências.
 
 ![Placeholder da arquitetura](docs/images/architecture-placeholder.svg)
 
@@ -60,12 +61,12 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 
 | Camada | Tecnologia | Papel no laboratório |
 | --- | --- | --- |
-| Backend | FastAPI | API base para healthcheck, testes e integração |
-| Frontend | Node.js + React/Vite | Interface simples para consumir a API |
-| Banco | PostgreSQL | Base relacional para cenários locais e service container |
+| Backend | FastAPI | API leve para auditoria e qualidade de dados |
+| Banco | PostgreSQL | Persistência local e em service container |
+| Acesso SQL | psycopg | Conexão direta e SQL simples, sem ORM |
 | CI/CD | GitHub Actions | Pipelines, debug, logs, artefatos e badge |
 | Containers | Docker Compose | Ambiente local rápido para desenvolvimento |
-| Testes | Pytest | Validação automatizada do backend |
+| Testes | Pytest | Validação unitária e integração com PostgreSQL |
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -73,19 +74,65 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 
 ## Como rodar
 
-Nesta etapa, o repositório foi preparado apenas com estrutura e arquivos-base. O fluxo local previsto começará assim:
+Fluxo local recomendado para o backend:
 
 1. Copiar `.env.example` para `.env`.
-2. Subir o PostgreSQL local com `docker compose up -d postgres`.
-3. Consultar o status com `make ps`.
-4. Evoluir backend, frontend e workflows nas próximas iterações.
+2. Subir o PostgreSQL local com `make up`.
+3. Preparar o ambiente Python com `make setup-backend`.
+4. Aplicar a estrutura do banco com `make migrate`.
+5. Carregar dados iniciais com `make seed`.
+6. Executar a API com `make run-api`.
+7. Rodar os testes com `make test-backend`.
 
-Arquivos de apoio:
+Comandos principais:
 
-- `docker-compose.yml`
-- `Makefile`
-- `backend/requirements.txt`
-- `frontend/package.json`
+- `make setup-backend`
+- `make migrate`
+- `make seed`
+- `make test-backend`
+- `make run-api`
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="endpoints"></a>
+
+## Endpoints
+
+Resumo da API atual:
+
+| Método | Rota | Finalidade |
+| --- | --- | --- |
+| GET | `/health` | Verifica se a aplicação está viva |
+| GET | `/ready` | Valida conexão com PostgreSQL e presença das tabelas |
+| GET | `/pipeline-runs` | Lista execuções de pipeline |
+| POST | `/pipeline-runs` | Registra uma nova execução |
+| GET | `/quality-checks` | Lista validações de qualidade |
+| POST | `/quality-checks` | Registra uma nova validação |
+| GET | `/audit-logs` | Lista logs técnicos gerados pela API |
+| GET | `/quality-summary` | Retorna um resumo agregado da operação |
+
+Exemplo de payload para `POST /pipeline-runs`:
+
+```json
+{
+  "pipeline_name": "daily_ingestion",
+  "status": "success",
+  "records_processed": 1250
+}
+```
+
+Exemplo de payload para `POST /quality-checks`:
+
+```json
+{
+  "pipeline_run_id": 1,
+  "check_name": "null_rate_orders",
+  "status": "passed",
+  "severity": "low",
+  "expected_value": "0%",
+  "actual_value": "0%"
+}
+```
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -101,7 +148,7 @@ O diretório `.github/workflows/` foi preparado para receber pipelines com foco 
 - diagnóstico de falhas e troubleshooting
 - publicação de badge de status
 
-Nesta fase ainda não existe workflow implementado. O espaço foi criado para evolução incremental e rastreável.
+O backend já está preparado para funcionar com `DATABASE_URL`, o que simplifica o uso do PostgreSQL local e também do service container em GitHub Actions.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -109,12 +156,7 @@ Nesta fase ainda não existe workflow implementado. O espaço foi criado para ev
 
 ## Debug e logs
 
-Um dos objetivos centrais deste laboratório é tratar o pipeline como fonte de observabilidade, não apenas como automação. A documentação inicial cobre os pontos que receberão mais atenção:
-
-- logs de execução do GitHub Actions
-- debug habilitado por variáveis de ambiente
-- leitura de artifacts e job summaries
-- organização de evidências para portfólio
+Um dos objetivos centrais deste laboratório é tratar o pipeline como fonte de observabilidade, não apenas como automação. A API atual já grava eventos simples em `audit_logs` ao registrar execuções e validações, criando uma base pequena e clara para troubleshooting.
 
 Guia inicial em [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md).
 
@@ -187,10 +229,10 @@ Referência inicial:
 
 As próximas iterações naturais deste laboratório são:
 
-1. criar o primeiro workflow de CI com logs básicos
-2. adicionar um endpoint simples no FastAPI
-3. iniciar o frontend React/Vite com tela mínima
-4. conectar testes unitários e de integração
-5. publicar evidências visuais reais no diretório `docs/images`
+1. criar o primeiro workflow de CI com logs detalhados
+2. expandir validações de qualidade e cenários de falha
+3. iniciar o frontend React/Vite para consumir os endpoints
+4. publicar evidências visuais reais no diretório `docs/images`
+5. adicionar métricas e artefatos de execução para portfólio
 
 [⬆️ Retornar ao índice](#indice)
