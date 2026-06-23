@@ -15,7 +15,9 @@
 - [Arquitetura](#arquitetura)
 - [Tecnologias](#tecnologias)
 - [Como rodar localmente](#como-rodar-localmente)
+- [Ambiente Python](#ambiente-python)
 - [Endpoints](#endpoints)
+- [Interface gráfica](#interface-grafica)
 - [Workflows](#workflows)
 - [Debug e logs](#debug-e-logs)
 - [Service containers](#service-containers)
@@ -47,7 +49,7 @@ Os principais temas previstos nesta trilha são:
 
 ## Arquitetura
 
-O laboratório está organizado para manter separação clara entre aplicação, banco, automação e documentação. A base atual já inclui backend FastAPI com SQL simples, scripts de migração e seeds, além de espaço dedicado para troubleshooting e evidências.
+O laboratório está organizado para manter separação clara entre aplicação, banco, automação e documentação. A base atual já inclui backend FastAPI com SQL simples, scripts de migração e seeds, um frontend React + Vite e espaço dedicado para troubleshooting e evidências.
 
 ![Placeholder da arquitetura](docs/images/architecture-placeholder.svg)
 
@@ -62,6 +64,7 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 | Camada | Tecnologia | Papel no laboratório |
 | --- | --- | --- |
 | Backend | FastAPI | API leve para auditoria e qualidade de dados |
+| Frontend | React + Vite | Interface gráfica moderna para status, auditoria e qualidade |
 | Banco | PostgreSQL | Persistência local e em service container |
 | Acesso SQL | psycopg | Conexão direta e SQL simples, sem ORM |
 | CI/CD | GitHub Actions | Pipelines, debug, logs, artefatos e badge |
@@ -74,7 +77,7 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 
 ## Como rodar localmente
 
-Fluxo recomendado para subir o PostgreSQL local e validar a API:
+Fluxo recomendado para subir backend, banco e interface gráfica:
 
 1. copiar `.env.example` para `.env`
 2. criar o ambiente Python com `make setup-backend`
@@ -82,8 +85,18 @@ Fluxo recomendado para subir o PostgreSQL local e validar a API:
 4. conferir o status com `make ps`
 5. aplicar a migração com `make migrate`
 6. carregar dados de exemplo com `make seed`
-7. validar com `make test-backend`
-8. subir a API com `make run-api`
+7. validar o backend com `make test-backend`
+8. instalar o frontend com `make setup-frontend`
+9. subir a API com `make run-api`
+10. em outro terminal, subir a interface com `make run-frontend`
+
+Se o Node local estiver antigo, rode antes:
+
+```bash
+make setup-node
+```
+
+Esse alvo instala e ativa Node 20 via `nvm` para eliminar avisos de engine do frontend.
 
 Comandos em ordem:
 
@@ -95,17 +108,75 @@ make ps
 make migrate
 make seed
 make test-backend
+make setup-node
+make setup-frontend
 make run-api
+make run-frontend
 ```
 
-Se quiser testar a API manualmente, rode `make run-api` por último ou em outro terminal.
+Se quiser testar a API manualmente, rode `make run-api` antes do frontend. Para gerar o bundle visual do painel, use `make build-frontend`.
 
 Comandos úteis:
 
 - `make logs`
 - `make db-shell`
 - `make reset-db`
+- `make venv`
+- `make install-backend`
+- `make setup-node`
+- `make lint-frontend`
 - `make down`
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="ambiente-python"></a>
+
+## Ambiente Python
+
+O backend foi preparado para desenvolvimento local com `.venv`, sem instalar dependências globalmente. Esse fluxo funciona bem no WSL2 e no VSCode, mas não é obrigatório para quem prefere usar apenas Docker Compose para banco e serviços auxiliares.
+
+Criação manual da `.venv`:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r backend/requirements.txt
+```
+
+Automação equivalente pelo `Makefile`:
+
+```bash
+make venv
+make install-backend
+make setup-backend
+```
+
+Ativação da `.venv` no WSL:
+
+```bash
+source .venv/bin/activate
+```
+
+Como selecionar o interpretador no VSCode:
+
+1. abra a paleta com `Ctrl+Shift+P`
+2. execute `Python: Select Interpreter`
+3. escolha `${workspaceFolder}/.venv/bin/python`
+
+Como validar `python`, `pip` e `pytest`:
+
+```bash
+python --version
+pip --version
+pytest --version
+```
+
+Se quiser validar a suíte completa do backend depois:
+
+```bash
+make test-backend
+```
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -148,6 +219,33 @@ Exemplo de payload para `POST /quality-checks`:
   "actual_value": "0%"
 }
 ```
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="interface-grafica"></a>
+
+## Interface gráfica
+
+O frontend foi desenhado como um command center visual para demonstrar monitoramento técnico com linguagem de portfólio. Ele consome a API real quando disponível e entra em modo de fallback amigável quando o backend estiver offline.
+
+Telas atuais:
+
+- Overview com métricas agregadas de pipelines, falhas, alertas e taxa de sucesso
+- Pipeline Runs com tabela de execuções
+- Quality Checks com tabela de validações
+- Audit Logs com tabela de eventos técnicos
+- Health Status com status da API e do banco
+
+URLs locais:
+
+- API: http://localhost:8000/docs
+- Frontend: http://localhost:3000
+
+Placeholders preparados para prints:
+
+- `docs/images/frontend-overview.png`
+- `docs/images/frontend-quality-checks.png`
+- `docs/images/frontend-health-status.png`
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -220,6 +318,9 @@ Arquivos planejados em `docs/images/`:
 - `service-container-postgres.png`
 - `tests-and-artifacts.png`
 - `status-badge.png`
+- `frontend-overview.png`
+- `frontend-quality-checks.png`
+- `frontend-health-status.png`
 
 Organização complementar em [docs/evidence.md](docs/evidence.md).
 
@@ -238,10 +339,15 @@ POSTGRES_PORT=55432
 DATABASE_URL=postgresql://app_user:app_password@localhost:55432/data_quality_db
 ```
 
+Se o frontend abrir, mas não carregar dados, confirme que a API está rodando em `http://localhost:8000` e que a tela Health Status está apontando o backend como online.
+
+Se aparecer aviso de engine do Node ou falha por versão incompatível, rode `make setup-node` para instalar/usar Node 20 automaticamente via `nvm`.
+
 Referências rápidas:
 
 - [docs/troubleshooting.md](docs/troubleshooting.md)
 - [docs/troubleshooting/postgres.md](docs/troubleshooting/postgres.md)
+- [docs/troubleshooting/python-venv.md](docs/troubleshooting/python-venv.md)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -253,7 +359,7 @@ As próximas iterações naturais deste laboratório são:
 
 1. criar o primeiro workflow de CI com logs detalhados
 2. expandir validações de qualidade e cenários de falha
-3. iniciar o frontend React/Vite para consumir os endpoints
+3. adicionar filtros, ordenação e captura de insights por tela
 4. publicar evidências visuais reais no diretório `docs/images`
 5. adicionar métricas e artefatos de execução para portfólio
 

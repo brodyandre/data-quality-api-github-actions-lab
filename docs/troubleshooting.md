@@ -16,6 +16,7 @@ Servir como índice inicial para problemas conhecidos, causas prováveis e açõ
 ## Guias detalhados
 
 - [PostgreSQL local](troubleshooting/postgres.md)
+- [Python com .venv no VSCode](troubleshooting/python-venv.md)
 
 ## Organização
 

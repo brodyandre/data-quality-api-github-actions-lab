@@ -1,11 +1,26 @@
 {
-  "name": "data-quality-api-frontend",
+  "name": "data-quality-command-center",
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "echo \"Frontend React/Vite sera configurado na proxima etapa.\"",
-    "build": "echo \"Build do frontend ainda nao configurado.\"",
-    "test": "echo \"Sem testes de frontend nesta etapa inicial.\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3000",
+    "lint": "eslint src --ext .js,.jsx"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.3.2",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "vite": "^2.9.18"
   }
 }
