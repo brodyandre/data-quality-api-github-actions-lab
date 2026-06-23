@@ -1,0 +1,131 @@
+name: Debug Logs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Para debug avançado no GitHub Actions, você pode definir
+# ACTIONS_STEP_DEBUG=true e/ou ACTIONS_RUNNER_DEBUG=true
+# como Variable ou Secret no repositório.
+# Este workflow não habilita isso por padrão para evitar ruído excessivo.
+
+jobs:
+  debug-logs:
+    name: Demonstracao de logs e artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar diretório de artifacts
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          {
+            echo "Debug Logs Report"
+            echo "================="
+            echo "Workflow: $GITHUB_WORKFLOW"
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Run Attempt: $GITHUB_RUN_ATTEMPT"
+            echo "Ref: $GITHUB_REF"
+            echo "Commit: $GITHUB_SHA"
+            echo "Runner: $RUNNER_NAME"
+            echo "OS: $RUNNER_OS"
+            echo ""
+          } > artifacts/debug-report.txt
+          echo "::notice title=Artifacts preparados::Relatório base criado em artifacts/debug-report.txt."
+
+      - name: Validar ambiente
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Validacao de ambiente"
+          echo "Workspace: $GITHUB_WORKSPACE" | tee -a artifacts/debug-report.txt
+          echo "Actor: $GITHUB_ACTOR" | tee -a artifacts/debug-report.txt
+          echo "Evento: $GITHUB_EVENT_NAME" | tee -a artifacts/debug-report.txt
+          uname -a | tee -a artifacts/debug-report.txt
+          python3 --version | tee -a artifacts/debug-report.txt
+          node --version | tee -a artifacts/debug-report.txt
+          git --version | tee -a artifacts/debug-report.txt
+          echo "::endgroup::"
+          echo "::notice title=Ambiente validado::Runner e ferramentas base estao disponiveis."
+
+      - name: Validar dependências
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Validacao de dependencias"
+          for dependency in python3 node npm git; do
+            if command -v "$dependency" >/dev/null 2>&1; then
+              version="$("$dependency" --version 2>/dev/null | head -n 1)"
+              echo "[ok] $dependency -> $version" | tee -a artifacts/debug-report.txt
+            else
+              echo "::warning title=Dependencia ausente::$dependency nao foi encontrado no runner."
+              echo "[warning] $dependency ausente" | tee -a artifacts/debug-report.txt
+            fi
+          done
+          echo "::endgroup::"
+          echo "::notice title=Dependencias verificadas::Checagem concluida sem falhas bloqueantes."
+
+      - name: Simular execucao de testes
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Execucao simulada de testes"
+          echo "Coletando casos de teste..." | tee -a artifacts/debug-report.txt
+          echo "test_health ................ passed" | tee -a artifacts/debug-report.txt
+          echo "test_ready ................. passed" | tee -a artifacts/debug-report.txt
+          echo "test_quality_summary ....... passed" | tee -a artifacts/debug-report.txt
+          echo "Resumo: 3 aprovados, 0 falhas, 0 skipped" | tee -a artifacts/debug-report.txt
+          echo "::endgroup::"
+          echo "::notice title=Testes simulados::Saida controlada gerada para estudo de logs."
+
+      - name: Demonstrar annotations controladas
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Annotations controladas"
+          echo "::warning title=Latencia observada::Simulacao de oscilacao leve em dependencia externa."
+          echo "::error title=Exemplo controlado::Annotation de erro criada apenas para demonstracao visual."
+          echo "Annotations de warning e error geradas sem quebrar o workflow." | tee -a artifacts/debug-report.txt
+          echo "::endgroup::"
+          echo "::notice title=Annotations registradas::Workflow segue saudavel por ser uma simulacao controlada."
+
+      - name: Gerar relatorio final
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Geracao de relatorio"
+          {
+            echo ""
+            echo "Resumo executivo"
+            echo "----------------"
+            echo "Ambiente validado com sucesso"
+            echo "Dependencias essenciais verificadas"
+            echo "Testes simulados com status positivo"
+            echo "Annotations de warning e error demonstradas"
+            echo "Gerado em UTC: $(date -u '+%Y-%m-%d %H:%M:%S')"
+          } | tee -a artifacts/debug-report.txt
+
+          {
+            echo "## Debug Logs"
+            echo ""
+            echo "- Ambiente validado"
+            echo "- Dependencias verificadas"
+            echo "- Testes simulados executados"
+            echo "- Artifact disponivel em \`artifacts/debug-report.txt\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::endgroup::"
+          echo "::notice title=Relatorio final pronto::Consulte o artifact para leitura completa."
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-logs-report
+          path: artifacts/debug-report.txt
+          if-no-files-found: error
