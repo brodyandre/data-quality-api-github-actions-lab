@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backend-checks:
+    name: Backend Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install backend dependencies
+        shell: bash
+        run: |
+          echo "::notice title=Backend::Preparando ambiente Python para validação do FastAPI"
+          echo "::group::Backend | Instalação de dependências"
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+          echo "::endgroup::"
+
+      - name: Run backend unit tests
+        shell: bash
+        run: |
+          echo "::notice title=Backend::Executando testes unitários"
+          echo "::group::Backend | Testes unitários"
+          PYTHONPATH=backend pytest backend/tests/unit -q
+          echo "::endgroup::"
+
+      - name: Validate FastAPI import
+        shell: bash
+        run: |
+          echo "::group::Backend | Import da aplicação"
+          PYTHONPATH=backend python -c "from app.main import app; print(f'Aplicação carregada: {app.title}')"
+          echo "::notice title=Backend::Import da aplicação validado com sucesso"
+          echo "::endgroup::"
+
+  frontend-checks:
+    name: Frontend Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        shell: bash
+        run: |
+          echo "::notice title=Frontend::Preparando ambiente Node para build do painel"
+          echo "::group::Frontend | Instalação de dependências"
+          cd frontend
+          if [ -f package-lock.json ]; then
+            echo "::notice title=Frontend::package-lock.json encontrado; usando npm ci"
+            npm ci
+          else
+            echo "::warning title=Frontend::package-lock.json não encontrado; usando npm install"
+            npm install
+          fi
+          echo "::endgroup::"
+
+      - name: Build frontend
+        shell: bash
+        run: |
+          echo "::group::Frontend | Build"
+          cd frontend
+          npm run build
+          echo "::notice title=Frontend::Build concluído com sucesso"
+          echo "::endgroup::"

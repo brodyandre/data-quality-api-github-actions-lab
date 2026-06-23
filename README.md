@@ -2,7 +2,7 @@
 
 > Laboratório profissional para demonstrar CI/CD observável, debug de pipelines, service containers e evidências práticas com FastAPI, React/Vite e PostgreSQL.
 
-![CI Placeholder](https://img.shields.io/badge/CI-em%20planejamento-0EA5E9?style=for-the-badge)
+[![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
 ![Logs Placeholder](https://img.shields.io/badge/Logs-debug%20ready-0F172A?style=for-the-badge)
 ![Badge Placeholder](https://img.shields.io/badge/Status%20Badge-placeholder-22C55E?style=for-the-badge)
 ![Portfolio Placeholder](https://img.shields.io/badge/Portfolio-em%20construcao-F97316?style=for-the-badge)
@@ -261,7 +261,14 @@ O diretório `.github/workflows/` foi preparado para receber pipelines com foco 
 - diagnóstico de falhas e troubleshooting
 - publicação de badge de status
 
-O backend já está preparado para funcionar com `DATABASE_URL`, o que simplifica o uso do PostgreSQL local e também do service container em GitHub Actions.
+O workflow básico de CI agora executa:
+
+- `backend-checks` para instalar dependências Python, rodar testes unitários e validar o import do FastAPI
+- `frontend-checks` para instalar dependências Node e gerar o build do painel React + Vite
+- gatilhos em `pull_request`, `push` na `main` e `workflow_dispatch`
+- logs organizados com `::group::`, `::endgroup::`, `notice` e `warning`
+
+Como ainda não existe `remote` Git configurado neste clone local, o badge acima foi deixado em formato pronto para o GitHub. Depois do primeiro push, troque `SEU-USUARIO` pelo owner real do repositório para ativar o badge final.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -294,7 +301,7 @@ Visão inicial em [docs/service-containers.md](docs/service-containers.md).
 
 ## Status badge
 
-O README já está pronto para receber um badge real do GitHub Actions assim que o primeiro workflow for criado. Até lá, os badges acima funcionam como placeholders visuais do laboratório.
+O workflow `CI` já está preparado para publicar um badge de status assim que o repositório estiver no GitHub com o owner correto no link do badge.
 
 Exemplo futuro:
 
