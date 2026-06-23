@@ -97,12 +97,6 @@ Camadas principais:
 - `action/`: Docker Action local para processar relatórios do pipeline
 - `docs/`: arquitetura, troubleshooting, evidências e guias técnicos
 
-Visão de arquitetura atual:
-
-<p align="center">
-  <img src="docs/images/architecture-placeholder.svg" alt="Placeholder da arquitetura do laboratório" width="88%">
-</p>
-
 Detalhes complementares em [docs/architecture.md](docs/architecture.md).
 
 [⬆️ Retornar ao índice](#indice)
@@ -432,26 +426,7 @@ Observações:
 
 ## Status Badge
 
-Os badges deste README já apontam para o repositório publicado em `brodyandre/data-quality-api-github-actions-lab`. Se algum badge ainda aparecer vazio por alguns instantes, normalmente basta aguardar a atualização do GitHub após a execução do workflow correspondente.
-
-Exemplo:
-
-```md
-[![CI](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](...)
-```
-
-Badges previstos neste projeto:
-
-- `CI`
-- `Integration PostgreSQL`
-- `Debug Logs`
-- `Docker Action Demo`
-
-Snapshot do topo do repositório com badges carregados:
-
-<p align="center">
-  <img src="docs/images/status-badge.png" alt="Badges do repositório" width="88%">
-</p>
+Os badges do topo já apontam para `brodyandre/data-quality-api-github-actions-lab`. Se algum deles aparecer vazio por alguns instantes, normalmente basta aguardar a atualização do GitHub após a execução do workflow correspondente.
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -459,9 +434,9 @@ Snapshot do topo do repositório com badges carregados:
 
 ## Evidências visuais planejadas
 
-Este README agora já incorpora parte das capturas reais do laboratório, e a seção continua servindo como mapa para novas evidências que forem sendo adicionadas com a evolução do projeto.
+Este README já incorpora parte das capturas reais do laboratório. A lista abaixo funciona como mapa do material visual disponível e das evidências que podem continuar enriquecendo o projeto.
 
-Arquivos planejados em `docs/images/`:
+Capturas disponíveis em `docs/images/`:
 
 - `actions-postgres-service-container.png`
 - `actions-debug-logs.png`
@@ -472,26 +447,18 @@ Arquivos planejados em `docs/images/`:
 - `frontend-health-status.png`
 - `status-badge.png`
 
-Mini galeria atual:
-
-<p align="center">
-  <img src="docs/images/frontend-overview.png" alt="Overview do frontend" width="32%">
-  <img src="docs/images/actions-postgres-service-container.png" alt="Workflow de integração com PostgreSQL" width="32%">
-  <img src="docs/images/status-badge.png" alt="Badges do repositório" width="32%">
-</p>
-
 [⬆️ Retornar ao índice](#indice)
 
 <a id="como-inserir-prints-no-readme"></a>
 
 ## Como inserir prints no README
 
-Quando os workflows e telas forem executados no GitHub ou localmente, o processo recomendado é:
+Fluxo recomendado para novas capturas:
 
-1. salvar a imagem em `docs/images/` com um nome coerente
+1. salvar a imagem em `docs/images/` com nome coerente
 2. registrar a evidência correspondente em `docs/evidence.md`
-3. adicionar ou substituir a referência no README
-4. manter a legenda curta e técnica, sem exagero promocional
+3. inserir a imagem apenas na seção em que ela realmente agrega contexto
+4. manter legenda curta, técnica e sem repetir o texto do parágrafo
 
 Contexto recomendado para cada print já capturado:
 
@@ -504,18 +471,11 @@ Contexto recomendado para cada print já capturado:
 - `actions-docker-action-demo.png`: seção `GitHub Actions em destaque`
 - `status-badge.png`: seção `Status Badge`
 
-Exemplo de inserção:
+Boas práticas editoriais:
 
-```md
-![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
-```
-
-Sugestões de captura:
-
-- tela da execução do workflow
-- grupo de logs expandido
-- artifact disponível para download
-- frontend carregado com dados reais
+- evitar repetir a mesma imagem em múltiplas seções
+- priorizar prints que tragam contexto operacional real
+- substituir placeholders quando houver evidência melhor disponível
 
 [⬆️ Retornar ao índice](#indice)
 
