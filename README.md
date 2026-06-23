@@ -5,6 +5,7 @@
 [![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
 [![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
 [![Debug Logs](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml)
+[![Docker Action Demo](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml)
 ![Logs Placeholder](https://img.shields.io/badge/Logs-debug%20ready-0F172A?style=for-the-badge)
 ![Badge Placeholder](https://img.shields.io/badge/Status%20Badge-placeholder-22C55E?style=for-the-badge)
 ![Portfolio Placeholder](https://img.shields.io/badge/Portfolio-em%20construcao-F97316?style=for-the-badge)
@@ -286,6 +287,16 @@ O workflow `debug-logs.yml` foi criado para estudo direto de observabilidade no 
 - upload do artifact `artifacts/debug-report.txt`
 - comentários no YAML sobre `ACTIONS_STEP_DEBUG` e `ACTIONS_RUNNER_DEBUG`
 
+O workflow `docker-action-demo.yml` demonstra o padrão de container como action:
+
+- gera `artifacts/sample-report.txt` antes da execução
+- usa a action local `./action` com input `report-path`
+- empacota a lógica em `action/Dockerfile` e `action/entrypoint.sh`
+- lê o relatório dentro do workspace e imprime um resumo simples no log
+- falha com mensagem clara se o arquivo informado não existir
+
+Nesse modelo, o container não é um service da aplicação. Ele encapsula a própria action, o que ajuda a demonstrar reaproveitamento, portabilidade e isolamento de uma automação pequena e objetiva.
+
 Como ainda não existe `remote` Git configurado neste clone local, o badge acima foi deixado em formato pronto para o GitHub. Depois do primeiro push, troque `SEU-USUARIO` pelo owner real do repositório para ativar o badge final.
 
 [⬆️ Retornar ao índice](#indice)
@@ -304,6 +315,8 @@ O fluxo cobre:
 - geração de relatório em artifact
 - uso controlado de `warning` e `error` sem quebrar o workflow
 
+Além disso, o laboratório agora inclui uma Docker Action local para ler relatórios gerados no pipeline e transformar esse conteúdo em um resumo curto e reutilizável no próprio GitHub Actions.
+
 O debug avançado pode ser ativado no repositório com `ACTIONS_STEP_DEBUG=true` e `ACTIONS_RUNNER_DEBUG=true` via Variable ou Secret, quando for interessante ampliar o nível de detalhe.
 
 Guia inicial em [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md).
@@ -312,6 +325,7 @@ Placeholders preparados para prints:
 
 - `docs/images/actions-debug-logs.png`
 - `docs/images/actions-artifacts.png`
+- `docs/images/actions-docker-action-demo.png`
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -334,7 +348,7 @@ Visão inicial em [docs/service-containers.md](docs/service-containers.md).
 
 ## Status badge
 
-Os workflows `CI`, `Integration Postgres` e `Debug Logs` já estão preparados para publicar badges de status assim que o repositório estiver no GitHub com o owner correto nos links.
+Os workflows `CI`, `Integration Postgres`, `Debug Logs` e `Docker Action Demo` já estão preparados para publicar badges de status assim que o repositório estiver no GitHub com o owner correto nos links.
 
 Exemplos futuros:
 
@@ -342,6 +356,7 @@ Exemplos futuros:
 ![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)
 ![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)
 ![Debug Logs](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)
+![Docker Action Demo](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)
 ```
 
 [⬆️ Retornar ao índice](#indice)
@@ -361,6 +376,7 @@ Arquivos planejados em `docs/images/`:
 - `actions-postgres-service-container.png`
 - `actions-debug-logs.png`
 - `actions-artifacts.png`
+- `actions-docker-action-demo.png`
 - `tests-and-artifacts.png`
 - `status-badge.png`
 - `frontend-overview.png`
@@ -388,9 +404,12 @@ Se o frontend abrir, mas não carregar dados, confirme que a API está rodando e
 
 Se aparecer aviso de engine do Node ou falha por versão incompatível, rode `make setup-node` para instalar/usar Node 20 automaticamente via `nvm`.
 
+Se a Docker Action local falhar por arquivo ausente ou caminho incorreto, revise o `report-path` e consulte o guia específico de troubleshooting.
+
 Referências rápidas:
 
 - [docs/troubleshooting.md](docs/troubleshooting.md)
+- [docs/troubleshooting/docker-action.md](docs/troubleshooting/docker-action.md)
 - [docs/troubleshooting/postgres.md](docs/troubleshooting/postgres.md)
 - [docs/troubleshooting/python-venv.md](docs/troubleshooting/python-venv.md)
 

@@ -1,0 +1,13 @@
+name: "Report Summary Docker Action"
+description: "Le um arquivo de relatorio do workspace e imprime um resumo simples no log do GitHub Actions."
+
+inputs:
+  report-path:
+    description: "Caminho do arquivo de relatorio dentro do workspace."
+    required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.report-path }}

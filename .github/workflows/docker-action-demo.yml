@@ -1,0 +1,51 @@
+name: Docker Action Demo
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker-action-demo:
+    name: Container como action
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Gerar relatorio de exemplo
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          cat <<'EOF' > artifacts/sample-report.txt
+          Data Quality API - Sample Report
+          pipeline_name=daily_ingestion
+          status=success
+          records_processed=1250
+          quality_checks=3
+          notes=Workflow demo para Docker Action local
+          EOF
+          echo "::notice title=Relatorio criado::Arquivo artifacts/sample-report.txt preparado para a Docker Action."
+
+      - name: Exibir relatorio de exemplo
+        shell: bash
+        run: |
+          echo "::group::Conteudo do relatorio"
+          cat artifacts/sample-report.txt
+          echo "::endgroup::"
+
+      - name: Executar Docker Action local
+        uses: ./action
+        with:
+          report-path: artifacts/sample-report.txt
+
+      - name: Upload do artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-action-sample-report
+          path: artifacts/sample-report.txt
+          if-no-files-found: error
