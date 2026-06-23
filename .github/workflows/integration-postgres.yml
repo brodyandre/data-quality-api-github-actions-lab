@@ -1,0 +1,172 @@
+name: Integration Postgres
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration-postgres:
+    name: Integration tests with PostgreSQL service container
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: data_quality_db
+          POSTGRES_USER: app_user
+          POSTGRES_PASSWORD: app_password
+        options: >-
+          --health-cmd "pg_isready -U app_user -d data_quality_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://app_user:app_password@postgres:5432/data_quality_db
+      PYTHONPATH: backend
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Preparar diretório de artefatos
+        shell: bash
+        run: |
+          mkdir -p artifacts
+          {
+            echo "Integration Postgres Report"
+            echo "==========================="
+            echo "Workflow: $GITHUB_WORKFLOW"
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Ref: $GITHUB_REF"
+            echo "Job container: ubuntu:22.04"
+            echo "Service container: postgres:16"
+            echo "DATABASE_URL: $DATABASE_URL"
+            echo ""
+          } > artifacts/integration-report.txt
+
+      - name: Instalar dependências do sistema
+        id: system-deps
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Instalando dependências no container Ubuntu 22.04"
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            python3 \
+            python3-venv \
+            python3-pip \
+            postgresql-client \
+            curl
+          python3 --version | tee -a artifacts/integration-report.txt
+          pip3 --version | tee -a artifacts/integration-report.txt
+          psql --version | tee -a artifacts/integration-report.txt
+          curl --version | head -n 1 | tee -a artifacts/integration-report.txt
+          echo "::endgroup::"
+          echo "::notice title=Container pronto::Dependências básicas instaladas com sucesso."
+
+      - name: Instalar dependências do backend
+        id: backend-deps
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Criando .venv e instalando dependências Python"
+          python3 -m venv .venv
+          . .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+          python --version | tee -a artifacts/integration-report.txt
+          pytest --version | tee -a artifacts/integration-report.txt
+          echo "::endgroup::"
+          echo "::notice title=Backend pronto::Ambiente Python configurado para os testes."
+
+      - name: Aguardar PostgreSQL
+        id: wait-postgres
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "::group::Verificando readiness do PostgreSQL"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if pg_isready -h postgres -U app_user -d data_quality_db; then
+              echo "PostgreSQL disponível pelo hostname postgres." | tee -a artifacts/integration-report.txt
+              echo "::endgroup::"
+              echo "::notice title=Banco pronto::O service container respondeu ao pg_isready."
+              exit 0
+            fi
+            echo "Tentativa ${attempt}/10: aguardando PostgreSQL..."
+            sleep 2
+          done
+          echo "::warning title=Readiness não concluída::O banco não ficou pronto no tempo esperado."
+          echo "::endgroup::"
+          exit 1
+
+      - name: Executar migrations
+        id: migrate
+        shell: bash
+        run: |
+          set -euo pipefail
+          . .venv/bin/activate
+          echo "::group::Aplicando migrations"
+          python scripts/run_migrations.py | tee -a artifacts/integration-report.txt
+          echo "::endgroup::"
+
+      - name: Executar seed
+        id: seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          . .venv/bin/activate
+          echo "::group::Carregando seed"
+          python scripts/seed_database.py | tee -a artifacts/integration-report.txt
+          echo "::endgroup::"
+
+      - name: Rodar testes de integração
+        id: integration-tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          . .venv/bin/activate
+          echo "::group::Executando suíte de integração com PostgreSQL"
+          pytest backend/tests/integration -q | tee artifacts/pytest-integration.log
+          echo "::endgroup::"
+          echo "::notice title=Testes finalizados::A suíte de integração foi concluída."
+
+      - name: Consolidar relatório
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo ""
+            echo "Resumo das etapas"
+            echo "-----------------"
+            echo "system-deps: ${{ steps.system-deps.outcome }}"
+            echo "backend-deps: ${{ steps.backend-deps.outcome }}"
+            echo "wait-postgres: ${{ steps.wait-postgres.outcome }}"
+            echo "migrate: ${{ steps.migrate.outcome }}"
+            echo "seed: ${{ steps.seed.outcome }}"
+            echo "integration-tests: ${{ steps.integration-tests.outcome }}"
+            echo "Gerado em UTC: $(date -u '+%Y-%m-%d %H:%M:%S')"
+          } >> artifacts/integration-report.txt
+
+          if [ ! -f artifacts/pytest-integration.log ]; then
+            echo "pytest-integration.log não foi gerado." >> artifacts/integration-report.txt
+          fi
+
+      - name: Publicar artefatos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-postgres-report
+          path: |
+            artifacts/integration-report.txt
+            artifacts/pytest-integration.log
+          if-no-files-found: warn

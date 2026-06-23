@@ -3,6 +3,7 @@
 > Laboratório profissional para demonstrar CI/CD observável, debug de pipelines, service containers e evidências práticas com FastAPI, React/Vite e PostgreSQL.
 
 [![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
+[![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
 ![Logs Placeholder](https://img.shields.io/badge/Logs-debug%20ready-0F172A?style=for-the-badge)
 ![Badge Placeholder](https://img.shields.io/badge/Status%20Badge-placeholder-22C55E?style=for-the-badge)
 ![Portfolio Placeholder](https://img.shields.io/badge/Portfolio-em%20construcao-F97316?style=for-the-badge)
@@ -268,6 +269,14 @@ O workflow básico de CI agora executa:
 - gatilhos em `pull_request`, `push` na `main` e `workflow_dispatch`
 - logs organizados com `::group::`, `::endgroup::`, `notice` e `warning`
 
+O workflow principal de integração com PostgreSQL adiciona uma trilha mais próxima do ambiente real:
+
+- job executando em `ubuntu-latest`, mas dentro de `container: ubuntu:22.04`
+- `postgres:16` como service container com healthcheck por `pg_isready`
+- `DATABASE_URL` apontando para `postgresql://app_user:app_password@postgres:5432/data_quality_db`
+- execução de migrations, seed e testes de integração reais
+- artifact com relatório simples em `artifacts/integration-report.txt`
+
 Como ainda não existe `remote` Git configurado neste clone local, o badge acima foi deixado em formato pronto para o GitHub. Depois do primeiro push, troque `SEU-USUARIO` pelo owner real do repositório para ativar o badge final.
 
 [⬆️ Retornar ao índice](#indice)
@@ -293,6 +302,8 @@ O projeto foi pensado para demonstrar duas camadas complementares:
 - PostgreSQL local com Docker Compose para desenvolvimento
 - PostgreSQL como service container em GitHub Actions para testes e validação em pipeline
 
+No workflow `integration-postgres.yml`, o job roda dentro de `ubuntu:22.04` e conversa com o banco usando o hostname `postgres`, que é o nome do service container dentro da rede interna do job. Isso permite validar migrations, seed e testes de integração sem depender de infraestrutura externa.
+
 Visão inicial em [docs/service-containers.md](docs/service-containers.md).
 
 [⬆️ Retornar ao índice](#indice)
@@ -301,12 +312,13 @@ Visão inicial em [docs/service-containers.md](docs/service-containers.md).
 
 ## Status badge
 
-O workflow `CI` já está preparado para publicar um badge de status assim que o repositório estiver no GitHub com o owner correto no link do badge.
+Os workflows `CI` e `Integration Postgres` já estão preparados para publicar badges de status assim que o repositório estiver no GitHub com o owner correto nos links.
 
-Exemplo futuro:
+Exemplos futuros:
 
 ```md
 ![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)
+![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)
 ```
 
 [⬆️ Retornar ao índice](#indice)
@@ -323,6 +335,7 @@ Arquivos planejados em `docs/images/`:
 
 - `pipeline-summary.png`
 - `service-container-postgres.png`
+- `actions-postgres-service-container.png`
 - `tests-and-artifacts.png`
 - `status-badge.png`
 - `frontend-overview.png`
