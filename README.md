@@ -264,18 +264,24 @@ Características do frontend:
 - fallback amigável quando a API estiver offline
 - preparação explícita para screenshots futuros no README
 
-Placeholders planejados:
-
-- `docs/images/frontend-overview.png`
-- `docs/images/frontend-quality-checks.png`
-- `docs/images/frontend-health-status.png`
-
-Capturas atuais do frontend:
+Capturas atuais da interface:
 
 <p align="center">
-  <img src="docs/images/frontend-overview.png" alt="Overview do frontend" width="32%">
-  <img src="docs/images/frontend-quality-checks.png" alt="Quality Checks no frontend" width="32%">
-  <img src="docs/images/frontend-health-status.png" alt="Health Status no frontend" width="32%">
+  <img src="docs/images/frontend-overview.png" alt="Overview do frontend" width="88%">
+  <br>
+  <sub><strong>Overview</strong>: visão consolidada de métricas e estado operacional.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/images/frontend-quality-checks.png" alt="Quality Checks no frontend" width="88%">
+  <br>
+  <sub><strong>Quality Checks</strong>: leitura rápida das validações e severidades.</sub>
+</p>
+
+<p align="center">
+  <img src="docs/images/frontend-health-status.png" alt="Health Status no frontend" width="88%">
+  <br>
+  <sub><strong>Health Status</strong>: checagem visual da saúde da API e do banco.</sub>
 </p>
 
 [⬆️ Retornar ao índice](#indice)
