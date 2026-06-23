@@ -1,50 +1,66 @@
 # data-quality-api-github-actions-lab
 
-> Laboratório profissional para demonstrar CI/CD observável, debug de pipelines, service containers e evidências práticas com FastAPI, React/Vite e PostgreSQL.
+> Laboratório técnico de Engenharia de Dados, DevOps e CI/CD com foco em observabilidade, testes reais, service containers e automações reutilizáveis no GitHub Actions.
 
 [![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
-[![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
+[![Integration PostgreSQL](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
 [![Debug Logs](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml)
 [![Docker Action Demo](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml)
-![Logs Placeholder](https://img.shields.io/badge/Logs-debug%20ready-0F172A?style=for-the-badge)
-![Badge Placeholder](https://img.shields.io/badge/Status%20Badge-placeholder-22C55E?style=for-the-badge)
-![Portfolio Placeholder](https://img.shields.io/badge/Portfolio-em%20construcao-F97316?style=for-the-badge)
 
 <a id="indice"></a>
+
+## Visão geral
+
+Este projeto foi desenhado como um laboratório profissional para demonstrar, de forma objetiva, como estruturar um ambiente moderno com FastAPI, React/Vite, PostgreSQL e GitHub Actions. A proposta não é apenas subir uma aplicação, mas mostrar decisões práticas de engenharia em torno de automação, rastreabilidade, logs, service containers e evidências técnicas para portfólio.
+
+O repositório combina quatro frentes principais:
+
+- API de auditoria e qualidade de dados com SQL simples e foco em clareza
+- interface gráfica para visualização operacional e técnica
+- banco PostgreSQL preparado para uso local e em CI
+- workflows de GitHub Actions cobrindo CI, integração real, debug/logs e Docker Action local
+
+Destaques visuais do laboratório: `🔎 observabilidade`, `🧪 testes reais`, `🐘 PostgreSQL`, `⚙️ GitHub Actions`.
+
+[⬆️ Retornar ao índice](#indice)
 
 ## Índice
 
 - [Objetivo](#objetivo)
 - [Arquitetura](#arquitetura)
-- [Tecnologias](#tecnologias)
+- [Stack utilizada](#stack-utilizada)
+- [Estrutura do projeto](#estrutura-do-projeto)
 - [Como rodar localmente](#como-rodar-localmente)
-- [Ambiente Python](#ambiente-python)
-- [Endpoints](#endpoints)
-- [Interface gráfica](#interface-grafica)
-- [Workflows](#workflows)
+- [Backend FastAPI](#backend-fastapi)
+- [Frontend Node.js/React](#frontend-nodejsreact)
+- [Banco PostgreSQL](#banco-postgresql)
+- [GitHub Actions em destaque](#github-actions-em-destaque)
+- [Service Containers](#service-containers)
 - [Debug e logs](#debug-e-logs)
-- [Service containers](#service-containers)
-- [Status badge](#status-badge)
-- [Evidências visuais](#evidencias-visuais)
+- [Status Badge](#status-badge)
+- [Evidências visuais planejadas](#evidencias-visuais-planejadas)
+- [Como inserir prints no README](#como-inserir-prints-no-readme)
 - [Troubleshooting](#troubleshooting)
+- [Principais habilidades demonstradas](#principais-habilidades-demonstradas)
 - [Próximos passos](#proximos-passos)
+- [Autor](#autor)
+
+[⬆️ Retornar ao índice](#indice)
 
 <a id="objetivo"></a>
 
 ## Objetivo
 
-Este repositório nasce como um laboratório de referência para demonstrar boas práticas de Engenharia de Dados, DevOps e CI/CD com foco em observabilidade. A proposta é evoluir uma aplicação simples, mas com pipelines ricos em logs, rastreabilidade, diagnóstico e evidências visuais para portfólio técnico.
+O objetivo deste laboratório é mostrar capacidade prática de construir um projeto pequeno, mas tecnicamente bem posicionado, para avaliação de maturidade em Engenharia de Dados, DevOps e CI/CD. O foco está em qualidade de execução, simplicidade arquitetural e boa comunicação técnica.
 
-Os principais temas previstos nesta trilha são:
+Temas centrais já contemplados ou preparados:
 
-- debug e leitura de logs no GitHub Actions
-- métricas e insights sobre execuções
-- uso de status badge
-- job rodando em ambiente Ubuntu 22.04
-- PostgreSQL como service container
-- backend com FastAPI
-- frontend com Node.js + React/Vite
-- testes automatizados com evidências publicáveis
+- observabilidade de pipelines no GitHub Actions
+- logs organizados com grouping e annotations
+- testes unitários e testes de integração com PostgreSQL real
+- uso de service container em job container Ubuntu 22.04
+- Docker Action local como exemplo de automação empacotada
+- documentação preparada para prints, artifacts e troubleshooting
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -52,27 +68,72 @@ Os principais temas previstos nesta trilha são:
 
 ## Arquitetura
 
-O laboratório está organizado para manter separação clara entre aplicação, banco, automação e documentação. A base atual já inclui backend FastAPI com SQL simples, scripts de migração e seeds, um frontend React + Vite e espaço dedicado para troubleshooting e evidências.
+O laboratório segue uma separação clara entre aplicação, banco, automação e documentação. Isso facilita evolução incremental, leitura por recrutadores técnicos e reaproveitamento das peças em outros estudos ou demonstrações.
+
+Camadas principais:
+
+- `backend/`: API FastAPI, schemas, rotas, configuração e testes
+- `frontend/`: painel React/Vite para visão operacional
+- `database/`: migrations e seeds em SQL simples
+- `.github/workflows/`: pipelines de CI/CD e demonstrações de Actions
+- `action/`: Docker Action local para processar relatórios do pipeline
+- `docs/`: arquitetura, troubleshooting, evidências e guias técnicos
 
 ![Placeholder da arquitetura](docs/images/architecture-placeholder.svg)
 
-Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
+Detalhes complementares em [docs/architecture.md](docs/architecture.md).
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="tecnologias"></a>
+<a id="stack-utilizada"></a>
 
-## Tecnologias
+## Stack utilizada
 
 | Camada | Tecnologia | Papel no laboratório |
 | --- | --- | --- |
-| Backend | FastAPI | API leve para auditoria e qualidade de dados |
-| Frontend | React + Vite | Interface gráfica moderna para status, auditoria e qualidade |
-| Banco | PostgreSQL | Persistência local e em service container |
-| Acesso SQL | psycopg | Conexão direta e SQL simples, sem ORM |
-| CI/CD | GitHub Actions | Pipelines, debug, logs, artefatos e badge |
-| Containers | Docker Compose | Ambiente local rápido para desenvolvimento |
-| Testes | Pytest | Validação unitária e integração com PostgreSQL |
+| Backend | FastAPI | API enxuta para auditoria e qualidade de dados |
+| Banco | PostgreSQL | Persistência local e em integração real no CI |
+| Acesso ao banco | psycopg | SQL direto, simples e estável |
+| Frontend | React + Vite | Interface gráfica leve para visualização |
+| Automação local | Makefile + Docker Compose | Atalhos de execução e banco local |
+| CI/CD | GitHub Actions | Testes, logs, artifacts, badges e debugging |
+| Testes | Pytest | Cobertura unitária e integração |
+| Docker Action | Dockerfile + shell script | Exemplo de container como action |
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="estrutura-do-projeto"></a>
+
+## Estrutura do projeto
+
+```text
+.
+├── .github/workflows/
+├── action/
+├── backend/
+│   ├── app/
+│   └── tests/
+├── database/
+│   ├── migrations/
+│   └── seeds/
+├── docs/
+│   ├── evidence/
+│   ├── images/
+│   └── troubleshooting/
+├── frontend/
+│   └── src/
+├── scripts/
+├── docker-compose.yml
+├── Makefile
+└── README.md
+```
+
+Pastas de maior interesse para avaliação:
+
+- `.github/workflows/` concentra os cenários de CI, debug e integração
+- `action/` demonstra como encapsular automação em uma Docker Action local
+- `backend/tests/integration/` mostra testes reais com PostgreSQL
+- `docs/` organiza evidências, troubleshooting e narrativa de portfólio
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -80,28 +141,7 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 
 ## Como rodar localmente
 
-Fluxo recomendado para subir backend, banco e interface gráfica:
-
-1. copiar `.env.example` para `.env`
-2. criar o ambiente Python com `make setup-backend`
-3. subir o banco com `make up`
-4. conferir o status com `make ps`
-5. aplicar a migração com `make migrate`
-6. carregar dados de exemplo com `make seed`
-7. validar o backend com `make test-backend`
-8. instalar o frontend com `make setup-frontend`
-9. subir a API com `make run-api`
-10. em outro terminal, subir a interface com `make run-frontend`
-
-Se o Node local estiver antigo, rode antes:
-
-```bash
-make setup-node
-```
-
-Esse alvo instala e ativa Node 20 via `nvm` para eliminar avisos de engine do frontend.
-
-Comandos em ordem:
+Fluxo recomendado para desenvolvimento local no WSL2 ou Linux:
 
 ```bash
 cp .env.example .env
@@ -117,28 +157,32 @@ make run-api
 make run-frontend
 ```
 
-Se quiser testar a API manualmente, rode `make run-api` antes do frontend. Para gerar o bundle visual do painel, use `make build-frontend`.
+Ordem prática de uso:
+
+1. criar `.env` a partir de `.env.example`
+2. preparar a `.venv` do backend sem instalar dependências globalmente
+3. subir o PostgreSQL local com Docker Compose
+4. aplicar migrations e seed
+5. validar o backend com testes
+6. instalar dependências do frontend
+7. subir API e interface em terminais separados
+
+URLs locais:
+
+- API: `http://localhost:8000/docs`
+- Frontend: `http://localhost:3000`
 
 Comandos úteis:
 
 - `make logs`
 - `make db-shell`
 - `make reset-db`
-- `make venv`
-- `make install-backend`
-- `make setup-node`
-- `make lint-frontend`
+- `make build-frontend`
 - `make down`
 
-[⬆️ Retornar ao índice](#indice)
+Se o Node local estiver antigo, rode `make setup-node` antes da instalação do frontend.
 
-<a id="ambiente-python"></a>
-
-## Ambiente Python
-
-O backend foi preparado para desenvolvimento local com `.venv`, sem instalar dependências globalmente. Esse fluxo funciona bem no WSL2 e no VSCode, mas não é obrigatório para quem prefere usar apenas Docker Compose para banco e serviços auxiliares.
-
-Criação manual da `.venv`:
+Se preferir preparar o backend manualmente sem `Makefile`:
 
 ```bash
 python3 -m venv .venv
@@ -147,47 +191,15 @@ pip install --upgrade pip
 pip install -r backend/requirements.txt
 ```
 
-Automação equivalente pelo `Makefile`:
-
-```bash
-make venv
-make install-backend
-make setup-backend
-```
-
-Ativação da `.venv` no WSL:
-
-```bash
-source .venv/bin/activate
-```
-
-Como selecionar o interpretador no VSCode:
-
-1. abra a paleta com `Ctrl+Shift+P`
-2. execute `Python: Select Interpreter`
-3. escolha `${workspaceFolder}/.venv/bin/python`
-
-Como validar `python`, `pip` e `pytest`:
-
-```bash
-python --version
-pip --version
-pytest --version
-```
-
-Se quiser validar a suíte completa do backend depois:
-
-```bash
-make test-backend
-```
-
 [⬆️ Retornar ao índice](#indice)
 
-<a id="endpoints"></a>
+<a id="backend-fastapi"></a>
 
-## Endpoints
+## Backend FastAPI
 
-Resumo da API atual:
+O backend foi construído com foco em simplicidade, legibilidade e facilidade de manutenção. A API usa SQL simples com `psycopg`, leitura de configuração por `DATABASE_URL` e separação pequena entre configuração, rotas, schemas e acesso ao banco.
+
+Endpoints disponíveis:
 
 | Método | Rota | Finalidade |
 | --- | --- | --- |
@@ -197,54 +209,40 @@ Resumo da API atual:
 | POST | `/pipeline-runs` | Registra uma nova execução |
 | GET | `/quality-checks` | Lista validações de qualidade |
 | POST | `/quality-checks` | Registra uma nova validação |
-| GET | `/audit-logs` | Lista logs técnicos gerados pela API |
-| GET | `/quality-summary` | Retorna um resumo agregado da operação |
+| GET | `/audit-logs` | Lista eventos técnicos |
+| GET | `/quality-summary` | Retorna um resumo agregado |
 
-Exemplo de payload para `POST /pipeline-runs`:
+Pontos relevantes para avaliação técnica:
 
-```json
-{
-  "pipeline_name": "daily_ingestion",
-  "status": "success",
-  "records_processed": 1250
-}
-```
-
-Exemplo de payload para `POST /quality-checks`:
-
-```json
-{
-  "pipeline_run_id": 1,
-  "check_name": "null_rate_orders",
-  "status": "passed",
-  "severity": "low",
-  "expected_value": "0%",
-  "actual_value": "0%"
-}
-```
+- sem ORM pesado
+- scripts de migration e seed independentes
+- testes unitários e integração já preparados
+- compatível com execução local e com GitHub Actions
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="interface-grafica"></a>
+<a id="frontend-nodejsreact"></a>
 
-## Interface gráfica
+## Frontend Node.js/React
 
-O frontend foi desenhado como um command center visual para demonstrar monitoramento técnico com linguagem de portfólio. Ele consome a API real quando disponível e entra em modo de fallback amigável quando o backend estiver offline.
+O frontend foi pensado como uma camada visual de apoio ao laboratório, não como um dashboard genérico. A proposta é demonstrar leitura operacional de dados de qualidade, estado da aplicação e visibilidade sobre execuções.
 
 Telas atuais:
 
-- Overview com métricas agregadas de pipelines, falhas, alertas e taxa de sucesso
-- Pipeline Runs com tabela de execuções
-- Quality Checks com tabela de validações
-- Audit Logs com tabela de eventos técnicos
-- Health Status com status da API e do banco
+- Overview
+- Pipeline Runs
+- Quality Checks
+- Audit Logs
+- Health Status
 
-URLs locais:
+Características do frontend:
 
-- API: http://localhost:8000/docs
-- Frontend: http://localhost:3000
+- React + Vite com estrutura leve
+- CSS próprio, sem biblioteca pesada de UI
+- fallback amigável quando a API estiver offline
+- preparação explícita para screenshots futuros no README
 
-Placeholders preparados para prints:
+Placeholders planejados:
 
 - `docs/images/frontend-overview.png`
 - `docs/images/frontend-quality-checks.png`
@@ -252,52 +250,71 @@ Placeholders preparados para prints:
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="workflows"></a>
+<a id="banco-postgresql"></a>
 
-## Workflows
+## Banco PostgreSQL
 
-O diretório `.github/workflows/` foi preparado para receber pipelines com foco em:
+O PostgreSQL é parte central da demonstração porque aparece em dois contextos distintos: desenvolvimento local e integração contínua no GitHub Actions.
 
-- execução de testes automatizados
-- coleta de logs e artefatos
-- uso de service containers
-- diagnóstico de falhas e troubleshooting
-- publicação de badge de status
+No ambiente local:
 
-O workflow básico de CI agora executa:
+- sobe via `docker-compose.yml`
+- usa volume nomeado para persistência
+- possui healthcheck
+- utiliza variáveis do `.env`
 
-- `backend-checks` para instalar dependências Python, rodar testes unitários e validar o import do FastAPI
-- `frontend-checks` para instalar dependências Node e gerar o build do painel React + Vite
-- gatilhos em `pull_request`, `push` na `main` e `workflow_dispatch`
-- logs organizados com `::group::`, `::endgroup::`, `notice` e `warning`
+No backend e nos scripts:
 
-O workflow principal de integração com PostgreSQL adiciona uma trilha mais próxima do ambiente real:
+- migrations ficam em `database/migrations/`
+- seeds ficam em `database/seeds/`
+- a conexão é controlada por `DATABASE_URL`
 
-- job executando em `ubuntu-latest`, mas dentro de `container: ubuntu:22.04`
-- `postgres:16` como service container com healthcheck por `pg_isready`
-- `DATABASE_URL` apontando para `postgresql://app_user:app_password@postgres:5432/data_quality_db`
-- execução de migrations, seed e testes de integração reais
-- artifact com relatório simples em `artifacts/integration-report.txt`
+Exemplo local:
 
-O workflow `debug-logs.yml` foi criado para estudo direto de observabilidade no GitHub Actions:
+```env
+DATABASE_URL=postgresql://app_user:app_password@localhost:5432/data_quality_db
+```
 
-- acionamento por `workflow_dispatch` e `push` na `main`
-- uso explícito de `::group::`, `::endgroup::`, `::notice::`, `::warning::` e `::error::`
-- simulação segura de validação de ambiente, dependências, testes e relatório
-- upload do artifact `artifacts/debug-report.txt`
-- comentários no YAML sobre `ACTIONS_STEP_DEBUG` e `ACTIONS_RUNNER_DEBUG`
+[⬆️ Retornar ao índice](#indice)
 
-O workflow `docker-action-demo.yml` demonstra o padrão de container como action:
+<a id="github-actions-em-destaque"></a>
 
-- gera `artifacts/sample-report.txt` antes da execução
-- usa a action local `./action` com input `report-path`
-- empacota a lógica em `action/Dockerfile` e `action/entrypoint.sh`
-- lê o relatório dentro do workspace e imprime um resumo simples no log
-- falha com mensagem clara se o arquivo informado não existir
+## GitHub Actions em destaque
 
-Nesse modelo, o container não é um service da aplicação. Ele encapsula a própria action, o que ajuda a demonstrar reaproveitamento, portabilidade e isolamento de uma automação pequena e objetiva.
+Este repositório foi estruturado para demonstrar diferentes padrões de automação no GitHub Actions, cada um com um objetivo técnico claro.
 
-Como ainda não existe `remote` Git configurado neste clone local, o badge acima foi deixado em formato pronto para o GitHub. Depois do primeiro push, troque `SEU-USUARIO` pelo owner real do repositório para ativar o badge final.
+Workflows principais:
+
+- `ci.yml`: valida backend e frontend em `push`, `pull_request` e `workflow_dispatch`
+- `integration-postgres.yml`: executa integração real com PostgreSQL como service container
+- `debug-logs.yml`: demonstra grouping, annotations, notices e artifacts
+- `docker-action-demo.yml`: demonstra container como action usando `uses: ./action`
+
+O laboratório cobre, em conjunto:
+
+- CI tradicional de aplicação
+- integração real com banco
+- diagnóstico orientado por logs
+- automação encapsulada em Docker Action local
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="service-containers"></a>
+
+## Service Containers
+
+O workflow de integração foi preparado para mostrar um cenário que costuma aparecer em times reais: job rodando em container dedicado e banco separado como service container.
+
+No caso deste projeto:
+
+- o runner usa `ubuntu-latest`
+- o job principal roda em `container: ubuntu:22.04`
+- o PostgreSQL sobe como service container `postgres:16`
+- a aplicação acessa o banco pelo hostname `postgres`
+
+Isso é importante porque, dentro do job container, `localhost` aponta para o próprio container do job, não para o banco. O hostname correto passa a ser o nome declarado em `services`.
+
+Referência complementar em [docs/service-containers.md](docs/service-containers.md).
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -305,85 +322,90 @@ Como ainda não existe `remote` Git configurado neste clone local, o badge acima
 
 ## Debug e logs
 
-Um dos objetivos centrais deste laboratório é tratar o pipeline como fonte de observabilidade, não apenas como automação. A API atual já grava eventos simples em `audit_logs` ao registrar execuções e validações, e o workflow `debug-logs.yml` transforma esse tema em uma demonstração isolada de logs profissionais, annotations e artifacts.
+Observabilidade é um dos eixos mais fortes deste laboratório. O objetivo não é apenas executar pipelines, mas produzir saídas que facilitem leitura humana, troubleshooting e reaproveitamento em portfólio.
 
-O fluxo cobre:
+Elementos já demonstrados:
 
-- validação de ambiente do runner
-- validação de dependências
-- simulação de execução de testes
-- geração de relatório em artifact
-- uso controlado de `warning` e `error` sem quebrar o workflow
+- `::group::` e `::endgroup::` para organizar blocos de log
+- `::notice::`, `::warning::` e `::error::` em cenário controlado
+- geração de artifacts como evidência textual
+- uso de `ACTIONS_STEP_DEBUG` e `ACTIONS_RUNNER_DEBUG` como opção de debug avançado
+- leitura de relatórios por Docker Action local
 
-Além disso, o laboratório agora inclui uma Docker Action local para ler relatórios gerados no pipeline e transformar esse conteúdo em um resumo curto e reutilizável no próprio GitHub Actions.
+Materiais de apoio:
 
-O debug avançado pode ser ativado no repositório com `ACTIONS_STEP_DEBUG=true` e `ACTIONS_RUNNER_DEBUG=true` via Variable ou Secret, quando for interessante ampliar o nível de detalhe.
-
-Guia inicial em [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md).
-
-Placeholders preparados para prints:
-
-- `docs/images/actions-debug-logs.png`
-- `docs/images/actions-artifacts.png`
-- `docs/images/actions-docker-action-demo.png`
-
-[⬆️ Retornar ao índice](#indice)
-
-<a id="service-containers"></a>
-
-## Service containers
-
-O projeto foi pensado para demonstrar duas camadas complementares:
-
-- PostgreSQL local com Docker Compose para desenvolvimento
-- PostgreSQL como service container em GitHub Actions para testes e validação em pipeline
-
-No workflow `integration-postgres.yml`, o job roda dentro de `ubuntu:22.04` e conversa com o banco usando o hostname `postgres`, que é o nome do service container dentro da rede interna do job. Isso permite validar migrations, seed e testes de integração sem depender de infraestrutura externa.
-
-Visão inicial em [docs/service-containers.md](docs/service-containers.md).
+- [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md)
+- [docs/evidence.md](docs/evidence.md)
 
 [⬆️ Retornar ao índice](#indice)
 
 <a id="status-badge"></a>
 
-## Status badge
+## Status Badge
 
-Os workflows `CI`, `Integration Postgres`, `Debug Logs` e `Docker Action Demo` já estão preparados para publicar badges de status assim que o repositório estiver no GitHub com o owner correto nos links.
+Os badges deste README já apontam para os workflows corretos, mas ainda usam o placeholder `SEU-USUARIO` no owner do repositório. Depois do push para o GitHub definitivo, basta substituir esse trecho pelo owner real para ativar os badges finais.
 
-Exemplos futuros:
+Exemplo:
 
 ```md
-![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)
-![Integration Postgres](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)
-![Debug Logs](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)
-![Docker Action Demo](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)
+[![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](...)
 ```
+
+Badges previstos neste projeto:
+
+- `CI`
+- `Integration PostgreSQL`
+- `Debug Logs`
+- `Docker Action Demo`
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="evidencias-visuais"></a>
+<a id="evidencias-visuais-planejadas"></a>
 
-## Evidências visuais
+## Evidências visuais planejadas
 
-Esta seção foi preparada para receber prints reais das execuções, resultados e artefatos do laboratório.
-
-![Placeholder da galeria de evidências](docs/images/evidence-placeholder.svg)
+Este README ainda não afirma a existência de screenshots reais onde hoje há apenas espaço planejado. A ideia é capturar evidências conforme os fluxos forem sendo executados e validados no GitHub.
 
 Arquivos planejados em `docs/images/`:
 
-- `pipeline-summary.png`
-- `service-container-postgres.png`
 - `actions-postgres-service-container.png`
 - `actions-debug-logs.png`
 - `actions-artifacts.png`
 - `actions-docker-action-demo.png`
-- `tests-and-artifacts.png`
-- `status-badge.png`
 - `frontend-overview.png`
 - `frontend-quality-checks.png`
 - `frontend-health-status.png`
+- `status-badge.png`
 
-Organização complementar em [docs/evidence.md](docs/evidence.md).
+Imagem placeholder atual:
+
+![Placeholder da galeria de evidências](docs/images/evidence-placeholder.svg)
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="como-inserir-prints-no-readme"></a>
+
+## Como inserir prints no README
+
+Quando os workflows e telas forem executados no GitHub ou localmente, o processo recomendado é:
+
+1. salvar a imagem em `docs/images/` com um nome coerente
+2. registrar a evidência correspondente em `docs/evidence.md`
+3. adicionar ou substituir a referência no README
+4. manter a legenda curta e técnica, sem exagero promocional
+
+Exemplo de inserção:
+
+```md
+![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
+```
+
+Sugestões de captura:
+
+- tela da execução do workflow
+- grupo de logs expandido
+- artifact disponível para download
+- frontend carregado com dados reais
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -391,27 +413,39 @@ Organização complementar em [docs/evidence.md](docs/evidence.md).
 
 ## Troubleshooting
 
-Se a porta `5432` estiver ocupada, ajuste `POSTGRES_PORT` e `DATABASE_URL` no `.env` para uma porta livre antes de rodar `make up`.
+Os cenários de troubleshooting foram organizados para apoiar tanto uso local quanto leitura em contexto de portfólio.
 
-Exemplo:
+Problemas comuns já mapeados:
 
-```env
-POSTGRES_PORT=55432
-DATABASE_URL=postgresql://app_user:app_password@localhost:55432/data_quality_db
-```
+- porta `5432` ocupada localmente
+- falha de conexão com PostgreSQL
+- incompatibilidade de versão do Node
+- caminho incorreto em Docker Action local
+- dúvidas sobre `.venv` no WSL2 e VSCode
 
-Se o frontend abrir, mas não carregar dados, confirme que a API está rodando em `http://localhost:8000` e que a tela Health Status está apontando o backend como online.
+Guias disponíveis:
 
-Se aparecer aviso de engine do Node ou falha por versão incompatível, rode `make setup-node` para instalar/usar Node 20 automaticamente via `nvm`.
-
-Se a Docker Action local falhar por arquivo ausente ou caminho incorreto, revise o `report-path` e consulte o guia específico de troubleshooting.
-
-Referências rápidas:
-
-- [docs/troubleshooting.md](docs/troubleshooting.md)
-- [docs/troubleshooting/docker-action.md](docs/troubleshooting/docker-action.md)
 - [docs/troubleshooting/postgres.md](docs/troubleshooting/postgres.md)
 - [docs/troubleshooting/python-venv.md](docs/troubleshooting/python-venv.md)
+- [docs/troubleshooting/docker-action.md](docs/troubleshooting/docker-action.md)
+- [docs/troubleshooting.md](docs/troubleshooting.md)
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="principais-habilidades-demonstradas"></a>
+
+## Principais habilidades demonstradas
+
+Este laboratório foi desenhado para evidenciar competências técnicas de forma prática e verificável:
+
+- desenho de backend leve com FastAPI e SQL simples
+- modelagem de ambiente local com Docker Compose
+- uso de PostgreSQL em integração contínua com service container
+- criação de workflows claros e orientados a diagnóstico
+- uso profissional de logs, annotations e artifacts
+- estruturação de documentação técnica para portfólio
+- criação de Docker Action local para automação reutilizável
+- integração entre backend, frontend, banco e pipelines
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -419,12 +453,24 @@ Referências rápidas:
 
 ## Próximos passos
 
-As próximas iterações naturais deste laboratório são:
+Evoluções naturais para as próximas iterações:
 
-1. criar o primeiro workflow de CI com logs detalhados
-2. expandir validações de qualidade e cenários de falha
-3. adicionar filtros, ordenação e captura de insights por tela
-4. publicar evidências visuais reais no diretório `docs/images`
-5. adicionar métricas e artefatos de execução para portfólio
+1. capturar screenshots reais dos workflows e da interface
+2. ampliar cenários de falha controlada para troubleshooting
+3. adicionar mais validações de qualidade de dados e métricas
+4. publicar artifacts adicionais com resumos de execução
+5. refinar a camada visual do frontend com dados mais ricos
+6. conectar badges finais ao repositório público definitivo
+
+[⬆️ Retornar ao índice](#indice)
+
+<a id="autor"></a>
+
+## Autor
+
+**Luiz André de Souza**
+
+- GitHub: https://github.com/brodyandre
+- LinkedIn: https://www.linkedin.com/in/luiz-andre-souza-data-engineer/
 
 [⬆️ Retornar ao índice](#indice)
