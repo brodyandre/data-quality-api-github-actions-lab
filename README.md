@@ -1,11 +1,21 @@
-# data-quality-api-github-actions-lab
+<h1 align="center">data-quality-api-github-actions-lab</h1>
 
-> Laboratório técnico de Engenharia de Dados, DevOps e CI/CD com foco em observabilidade, testes reais, service containers e automações reutilizáveis no GitHub Actions.
+<p align="center"><strong>Laboratório técnico de Engenharia de Dados, DevOps e CI/CD com foco em observabilidade, testes reais, service containers e automações reutilizáveis no GitHub Actions.</strong></p>
 
-[![CI](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
-[![Integration PostgreSQL](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
-[![Debug Logs](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml)
-[![Docker Action Demo](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml)
+<p align="center">
+  <a href="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml"><img src="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml"><img src="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg" alt="Integration PostgreSQL"></a>
+  <a href="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml"><img src="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg" alt="Debug Logs"></a>
+  <a href="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml"><img src="https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg" alt="Docker Action Demo"></a>
+</p>
+
+<p align="center">
+  <a href="#objetivo">Objetivo</a> •
+  <a href="#frontend-nodejsreact">Frontend</a> •
+  <a href="#github-actions-em-destaque">GitHub Actions</a> •
+  <a href="#service-containers">Service Containers</a> •
+  <a href="#status-badge">Badges</a>
+</p>
 
 <a id="indice"></a>
 
@@ -21,6 +31,13 @@ O repositório combina quatro frentes principais:
 - workflows de GitHub Actions cobrindo CI, integração real, debug/logs e Docker Action local
 
 Destaques visuais do laboratório: `🔎 observabilidade`, `🧪 testes reais`, `🐘 PostgreSQL`, `⚙️ GitHub Actions`.
+
+| Pilar | O que o projeto demonstra |
+| --- | --- |
+| `🔎` Observabilidade | Logs organizados, annotations, artifacts e troubleshooting orientado a evidências |
+| `🧪` Integração real | Testes com PostgreSQL local e service container no GitHub Actions |
+| `🖥️` Interface | Painel React/Vite com visão operacional e fallback amigável |
+| `⚙️` Automação | CI tradicional, debug workflow e Docker Action local reutilizável |
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -79,6 +96,12 @@ Camadas principais:
 - `.github/workflows/`: pipelines de CI/CD e demonstrações de Actions
 - `action/`: Docker Action local para processar relatórios do pipeline
 - `docs/`: arquitetura, troubleshooting, evidências e guias técnicos
+
+Visão de arquitetura atual:
+
+<p align="center">
+  <img src="docs/images/architecture-placeholder.svg" alt="Placeholder da arquitetura do laboratório" width="88%">
+</p>
 
 Detalhes complementares em [docs/architecture.md](docs/architecture.md).
 
@@ -247,17 +270,13 @@ Placeholders planejados:
 - `docs/images/frontend-quality-checks.png`
 - `docs/images/frontend-health-status.png`
 
-Visão geral da interface:
+Capturas atuais do frontend:
 
-![Overview do frontend](docs/images/frontend-overview.png)
-
-Tela de validações de qualidade:
-
-![Quality Checks no frontend](docs/images/frontend-quality-checks.png)
-
-Status operacional da API e do banco:
-
-![Health Status no frontend](docs/images/frontend-health-status.png)
+<p align="center">
+  <img src="docs/images/frontend-overview.png" alt="Overview do frontend" width="32%">
+  <img src="docs/images/frontend-quality-checks.png" alt="Quality Checks no frontend" width="32%">
+  <img src="docs/images/frontend-health-status.png" alt="Health Status no frontend" width="32%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -310,7 +329,9 @@ O laboratório cobre, em conjunto:
 
 Exemplo visual da Docker Action local em execução:
 
-![Docker Action Demo no GitHub Actions](docs/images/actions-docker-action-demo.png)
+<p align="center">
+  <img src="docs/images/actions-docker-action-demo.png" alt="Docker Action Demo no GitHub Actions" width="88%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -333,7 +354,9 @@ Referência complementar em [docs/service-containers.md](docs/service-containers
 
 Execução de integração com PostgreSQL no GitHub Actions:
 
-![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
+<p align="center">
+  <img src="docs/images/actions-postgres-service-container.png" alt="Workflow de integração com PostgreSQL" width="88%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -356,13 +379,12 @@ Materiais de apoio:
 - [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md)
 - [docs/evidence.md](docs/evidence.md)
 
-Logs agrupados e annotations em execução:
+Logs agrupados e artifacts publicados pelo workflow:
 
-![Workflow de debug e logs](docs/images/actions-debug-logs.png)
-
-Artifacts publicados pelo workflow:
-
-![Artifacts do workflow](docs/images/actions-artifacts.png)
+<p align="center">
+  <img src="docs/images/actions-debug-logs.png" alt="Workflow de debug e logs" width="49%">
+  <img src="docs/images/actions-artifacts.png" alt="Artifacts do workflow" width="49%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -421,7 +443,9 @@ Badges previstos neste projeto:
 
 Snapshot do topo do repositório com badges carregados:
 
-![Badges do repositório](docs/images/status-badge.png)
+<p align="center">
+  <img src="docs/images/status-badge.png" alt="Badges do repositório" width="88%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -444,9 +468,11 @@ Arquivos planejados em `docs/images/`:
 
 Mini galeria atual:
 
-![Overview do frontend](docs/images/frontend-overview.png)
-![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
-![Badges do repositório](docs/images/status-badge.png)
+<p align="center">
+  <img src="docs/images/frontend-overview.png" alt="Overview do frontend" width="32%">
+  <img src="docs/images/actions-postgres-service-container.png" alt="Workflow de integração com PostgreSQL" width="32%">
+  <img src="docs/images/status-badge.png" alt="Badges do repositório" width="32%">
+</p>
 
 [⬆️ Retornar ao índice](#indice)
 
