@@ -80,8 +80,6 @@ Camadas principais:
 - `action/`: Docker Action local para processar relatórios do pipeline
 - `docs/`: arquitetura, troubleshooting, evidências e guias técnicos
 
-![Placeholder da arquitetura](docs/images/architecture-placeholder.svg)
-
 Detalhes complementares em [docs/architecture.md](docs/architecture.md).
 
 [⬆️ Retornar ao índice](#indice)
@@ -249,6 +247,18 @@ Placeholders planejados:
 - `docs/images/frontend-quality-checks.png`
 - `docs/images/frontend-health-status.png`
 
+Visão geral da interface:
+
+![Overview do frontend](docs/images/frontend-overview.png)
+
+Tela de validações de qualidade:
+
+![Quality Checks no frontend](docs/images/frontend-quality-checks.png)
+
+Status operacional da API e do banco:
+
+![Health Status no frontend](docs/images/frontend-health-status.png)
+
 [⬆️ Retornar ao índice](#indice)
 
 <a id="banco-postgresql"></a>
@@ -298,6 +308,10 @@ O laboratório cobre, em conjunto:
 - diagnóstico orientado por logs
 - automação encapsulada em Docker Action local
 
+Exemplo visual da Docker Action local em execução:
+
+![Docker Action Demo no GitHub Actions](docs/images/actions-docker-action-demo.png)
+
 [⬆️ Retornar ao índice](#indice)
 
 <a id="service-containers"></a>
@@ -316,6 +330,10 @@ No caso deste projeto:
 Isso é importante porque, dentro do job container, `localhost` aponta para o próprio container do job, não para o banco. O hostname correto passa a ser o nome declarado em `services`.
 
 Referência complementar em [docs/service-containers.md](docs/service-containers.md).
+
+Execução de integração com PostgreSQL no GitHub Actions:
+
+![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -337,6 +355,14 @@ Materiais de apoio:
 
 - [docs/github-actions-debug-logs.md](docs/github-actions-debug-logs.md)
 - [docs/evidence.md](docs/evidence.md)
+
+Logs agrupados e annotations em execução:
+
+![Workflow de debug e logs](docs/images/actions-debug-logs.png)
+
+Artifacts publicados pelo workflow:
+
+![Artifacts do workflow](docs/images/actions-artifacts.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -393,13 +419,17 @@ Badges previstos neste projeto:
 - `Debug Logs`
 - `Docker Action Demo`
 
+Snapshot do topo do repositório com badges carregados:
+
+![Badges do repositório](docs/images/status-badge.png)
+
 [⬆️ Retornar ao índice](#indice)
 
 <a id="evidencias-visuais-planejadas"></a>
 
 ## Evidências visuais planejadas
 
-Este README ainda não afirma a existência de screenshots reais onde hoje há apenas espaço planejado. A ideia é capturar evidências conforme os fluxos forem sendo executados e validados no GitHub.
+Este README agora já incorpora parte das capturas reais do laboratório, e a seção continua servindo como mapa para novas evidências que forem sendo adicionadas com a evolução do projeto.
 
 Arquivos planejados em `docs/images/`:
 
@@ -412,9 +442,11 @@ Arquivos planejados em `docs/images/`:
 - `frontend-health-status.png`
 - `status-badge.png`
 
-Imagem placeholder atual:
+Mini galeria atual:
 
-![Placeholder da galeria de evidências](docs/images/evidence-placeholder.svg)
+![Overview do frontend](docs/images/frontend-overview.png)
+![Workflow de integração com PostgreSQL](docs/images/actions-postgres-service-container.png)
+![Badges do repositório](docs/images/status-badge.png)
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -428,6 +460,17 @@ Quando os workflows e telas forem executados no GitHub ou localmente, o processo
 2. registrar a evidência correspondente em `docs/evidence.md`
 3. adicionar ou substituir a referência no README
 4. manter a legenda curta e técnica, sem exagero promocional
+
+Contexto recomendado para cada print já capturado:
+
+- `frontend-overview.png`: seção `Frontend Node.js/React`
+- `frontend-quality-checks.png`: seção `Frontend Node.js/React`
+- `frontend-health-status.png`: seção `Frontend Node.js/React`
+- `actions-postgres-service-container.png`: seção `Service Containers`
+- `actions-debug-logs.png`: seção `Debug e logs`
+- `actions-artifacts.png`: seção `Debug e logs`
+- `actions-docker-action-demo.png`: seção `GitHub Actions em destaque`
+- `status-badge.png`: seção `Status Badge`
 
 Exemplo de inserção:
 
