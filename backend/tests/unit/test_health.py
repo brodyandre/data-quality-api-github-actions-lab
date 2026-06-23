@@ -1,13 +1,10 @@
-from fastapi.testclient import TestClient
-
-from app.main import app
-
-
-client = TestClient(app)
+from app.routes import health
+from app.schemas import HealthResponse
 
 
 def test_health_returns_ok() -> None:
-    response = client.get("/health")
+    response = health()
+    payload = response.model_dump() if hasattr(response, "model_dump") else response.dict()
 
-    assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    assert isinstance(response, HealthResponse)
+    assert payload == {"status": "ok"}

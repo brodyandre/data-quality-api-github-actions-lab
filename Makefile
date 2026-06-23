@@ -4,7 +4,7 @@ NODE_SETUP ?= bash scripts/setup_node.sh
 VENV_BIN ?= .venv/bin
 PYTHON ?= python3
 
-.PHONY: help up down logs ps db-shell reset-db venv install-backend setup-backend migrate seed test-backend run-api setup-node setup-frontend run-frontend build-frontend lint-frontend
+.PHONY: help up down logs ps db-shell reset-db venv install-backend setup-backend migrate seed test-backend run-api setup-node setup-frontend run-frontend build-frontend lint-frontend validate-docs check ci-local
 
 help:
 	@echo "Comandos disponiveis:"
@@ -26,6 +26,9 @@ help:
 	@echo "  make run-frontend    - sobe o frontend em http://localhost:3000"
 	@echo "  make build-frontend  - gera o build de producao do frontend"
 	@echo "  make lint-frontend   - executa o lint do frontend"
+	@echo "  make validate-docs   - valida README e documentacao essencial"
+	@echo "  make check           - valida estrutura, docs, testes backend e build frontend"
+	@echo "  make ci-local        - executa um fluxo local semelhante ao CI"
 
 up:
 	$(COMPOSE) up -d postgres
@@ -81,3 +84,31 @@ build-frontend:
 
 lint-frontend:
 	$(NODE_SETUP) -- bash -lc 'cd frontend && $(NPM) run lint'
+
+validate-docs:
+	@echo "Validando README e documentacao essencial..."
+	@for file in README.md docs/architecture.md docs/evidence.md docs/service-containers.md docs/github-actions-debug-logs.md docs/troubleshooting.md docs/troubleshooting/postgres.md docs/troubleshooting/python-venv.md docs/troubleshooting/docker-action.md; do \
+		if [ ! -f "$$file" ]; then \
+			echo "Arquivo de documentacao ausente: $$file"; \
+			exit 1; \
+		fi; \
+	done
+	@grep -Fqx "## Visão geral" README.md || (echo "Secao ausente no README: ## Visão geral" && exit 1)
+	@grep -Fqx "## Como rodar localmente" README.md || (echo "Secao ausente no README: ## Como rodar localmente" && exit 1)
+	@grep -Fqx "## GitHub Actions em destaque" README.md || (echo "Secao ausente no README: ## GitHub Actions em destaque" && exit 1)
+	@grep -Fqx "## Validação local antes do push" README.md || (echo "Secao ausente no README: ## Validação local antes do push" && exit 1)
+	@grep -Fqx "## Troubleshooting" README.md || (echo "Secao ausente no README: ## Troubleshooting" && exit 1)
+	@grep -Fqx "## Próximos passos" README.md || (echo "Secao ausente no README: ## Próximos passos" && exit 1)
+	@echo "Documentacao validada com sucesso."
+
+check: validate-docs
+	@echo "Validando estrutura do projeto..."
+	@bash scripts/check_project_structure.sh
+	@echo "Executando testes do backend..."
+	@$(MAKE) test-backend
+	@echo "Gerando build do frontend..."
+	@$(MAKE) build-frontend
+	@echo "Check local concluido com sucesso."
+
+ci-local:
+	@bash scripts/run_final_validation.sh
