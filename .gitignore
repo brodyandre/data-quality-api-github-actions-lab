@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node.js
+node_modules/
+dist/
+
+# Ambiente local
+.env
+
+# Logs e cobertura
+*.log
+.coverage
+htmlcov/
+coverage/
+
+# Docker / banco local
+postgres-data/
+
+# Editor e sistema
+.vscode/*
+!.vscode/settings.json
+.DS_Store
+Thumbs.db

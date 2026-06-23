@@ -1,0 +1,11 @@
+{
+  "name": "data-quality-api-frontend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Frontend React/Vite sera configurado na proxima etapa.\"",
+    "build": "echo \"Build do frontend ainda nao configurado.\"",
+    "test": "echo \"Sem testes de frontend nesta etapa inicial.\""
+  }
+}
