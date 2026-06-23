@@ -14,7 +14,7 @@
 - [Objetivo](#objetivo)
 - [Arquitetura](#arquitetura)
 - [Tecnologias](#tecnologias)
-- [Como rodar](#como-rodar)
+- [Como rodar localmente](#como-rodar-localmente)
 - [Endpoints](#endpoints)
 - [Workflows](#workflows)
 - [Debug e logs](#debug-e-logs)
@@ -70,27 +70,42 @@ Detalhes iniciais em [docs/architecture.md](docs/architecture.md).
 
 [⬆️ Retornar ao índice](#indice)
 
-<a id="como-rodar"></a>
+<a id="como-rodar-localmente"></a>
 
-## Como rodar
+## Como rodar localmente
 
-Fluxo local recomendado para o backend:
+Fluxo recomendado para subir o PostgreSQL local e validar a API:
 
-1. Copiar `.env.example` para `.env`.
-2. Subir o PostgreSQL local com `make up`.
-3. Preparar o ambiente Python com `make setup-backend`.
-4. Aplicar a estrutura do banco com `make migrate`.
-5. Carregar dados iniciais com `make seed`.
-6. Executar a API com `make run-api`.
-7. Rodar os testes com `make test-backend`.
+1. copiar `.env.example` para `.env`
+2. criar o ambiente Python com `make setup-backend`
+3. subir o banco com `make up`
+4. conferir o status com `make ps`
+5. aplicar a migração com `make migrate`
+6. carregar dados de exemplo com `make seed`
+7. validar com `make test-backend`
+8. subir a API com `make run-api`
 
-Comandos principais:
+Comandos em ordem:
 
-- `make setup-backend`
-- `make migrate`
-- `make seed`
-- `make test-backend`
-- `make run-api`
+```bash
+cp .env.example .env
+make setup-backend
+make up
+make ps
+make migrate
+make seed
+make test-backend
+make run-api
+```
+
+Se quiser testar a API manualmente, rode `make run-api` por último ou em outro terminal.
+
+Comandos úteis:
+
+- `make logs`
+- `make db-shell`
+- `make reset-db`
+- `make down`
 
 [⬆️ Retornar ao índice](#indice)
 
@@ -214,12 +229,19 @@ Organização complementar em [docs/evidence.md](docs/evidence.md).
 
 ## Troubleshooting
 
-O repositório também já reserva espaço para registrar incidentes, causas prováveis e ações corretivas. Isso ajuda a transformar falhas de pipeline em material de aprendizado e portfólio.
+Se a porta `5432` estiver ocupada, ajuste `POSTGRES_PORT` e `DATABASE_URL` no `.env` para uma porta livre antes de rodar `make up`.
 
-Referência inicial:
+Exemplo:
+
+```env
+POSTGRES_PORT=55432
+DATABASE_URL=postgresql://app_user:app_password@localhost:55432/data_quality_db
+```
+
+Referências rápidas:
 
 - [docs/troubleshooting.md](docs/troubleshooting.md)
-- `docs/troubleshooting/`
+- [docs/troubleshooting/postgres.md](docs/troubleshooting/postgres.md)
 
 [⬆️ Retornar ao índice](#indice)
 

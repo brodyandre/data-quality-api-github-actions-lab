@@ -2,7 +2,7 @@ COMPOSE ?= docker compose
 VENV_BIN ?= .venv/bin
 PYTHON ?= python3
 
-.PHONY: help up down logs ps setup-backend migrate seed test-backend run-api
+.PHONY: help up down logs ps db-shell reset-db setup-backend migrate seed test-backend run-api
 
 help:
 	@echo "Comandos disponiveis:"
@@ -10,6 +10,8 @@ help:
 	@echo "  make down           - derruba os containers locais"
 	@echo "  make logs           - acompanha os logs do PostgreSQL"
 	@echo "  make ps             - lista os containers do laboratorio"
+	@echo "  make db-shell       - abre um psql no container PostgreSQL"
+	@echo "  make reset-db       - recria o banco local do zero"
 	@echo "  make setup-backend  - cria .venv e instala dependencias do backend"
 	@echo "  make migrate        - aplica a migracao SQL inicial"
 	@echo "  make seed           - carrega dados de exemplo"
@@ -27,6 +29,13 @@ logs:
 
 ps:
 	$(COMPOSE) ps
+
+db-shell:
+	@set -a; [ -f .env ] && . ./.env; set +a; $(COMPOSE) exec postgres psql -U "$${POSTGRES_USER:-app_user}" -d "$${POSTGRES_DB:-data_quality_db}"
+
+reset-db:
+	$(COMPOSE) down -v
+	$(COMPOSE) up -d postgres
 
 setup-backend:
 	$(PYTHON) -m venv .venv

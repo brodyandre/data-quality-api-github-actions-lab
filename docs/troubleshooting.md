@@ -13,6 +13,10 @@ Servir como índice inicial para problemas conhecidos, causas prováveis e açõ
 | Testes de integração quebram | variáveis de ambiente inconsistentes | validar `.env` e workflow |
 | Badge não atualiza | workflow ainda não existe ou falhou | revisar nome do arquivo e status |
 
+## Guias detalhados
+
+- [PostgreSQL local](troubleshooting/postgres.md)
+
 ## Organização
 
 - use `docs/troubleshooting/` para casos detalhados

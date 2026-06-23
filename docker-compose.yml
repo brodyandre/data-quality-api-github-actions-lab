@@ -4,18 +4,27 @@ services:
     container_name: data-quality-lab-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-data_quality_lab}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-data_quality_db}
+      POSTGRES_USER: ${POSTGRES_USER:-app_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_password}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-data_quality_lab}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app_user} -d ${POSTGRES_DB:-data_quality_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 5s
+    networks:
+      - data_quality_network
 
 volumes:
-  postgres-data:
+  postgres_data:
+    name: postgres_data
+
+networks:
+  data_quality_network:
+    name: data_quality_network
+    driver: bridge
