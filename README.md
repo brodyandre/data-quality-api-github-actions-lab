@@ -2,10 +2,10 @@
 
 > Laboratório técnico de Engenharia de Dados, DevOps e CI/CD com foco em observabilidade, testes reais, service containers e automações reutilizáveis no GitHub Actions.
 
-[![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
-[![Integration PostgreSQL](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
-[![Debug Logs](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml)
-[![Docker Action Demo](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml)
+[![CI](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml)
+[![Integration PostgreSQL](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/integration-postgres.yml)
+[![Debug Logs](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/debug-logs.yml)
+[![Docker Action Demo](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml/badge.svg)](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/docker-action-demo.yml)
 
 <a id="indice"></a>
 
@@ -37,6 +37,7 @@ Destaques visuais do laboratório: `🔎 observabilidade`, `🧪 testes reais`, 
 - [GitHub Actions em destaque](#github-actions-em-destaque)
 - [Service Containers](#service-containers)
 - [Debug e logs](#debug-e-logs)
+- [Validação local antes do push](#validacao-local-antes-do-push)
 - [Status Badge](#status-badge)
 - [Evidências visuais planejadas](#evidencias-visuais-planejadas)
 - [Como inserir prints no README](#como-inserir-prints-no-readme)
@@ -339,16 +340,50 @@ Materiais de apoio:
 
 [⬆️ Retornar ao índice](#indice)
 
+<a id="validacao-local-antes-do-push"></a>
+
+## Validação local antes do push
+
+Antes do push final, o projeto agora conta com uma rotina local de validação para reduzir risco de inconsistência entre código, documentação e automações.
+
+Alvos disponíveis:
+
+- `make validate-docs`: valida o README e a documentação essencial
+- `make check`: valida estrutura, workflows, `.env.example`, migrations, testes do backend e build do frontend
+- `make ci-local`: executa um fluxo local parecido com o CI, incluindo banco, migrations, seed e checks finais
+
+Automação aplicada:
+
+- `scripts/run_final_validation.sh` centraliza a sequência final de validação
+- cria `.env` automaticamente se ele ainda não existir
+- reaproveita a `.venv` e `frontend/node_modules` quando já estiverem prontos
+- sobe o banco, aplica migration, carrega seed e executa `make check`
+
+Fluxo recomendado:
+
+```bash
+make ci-local
+```
+
+Observações:
+
+- `make check` não depende do GitHub Actions
+- `make ci-local` também não depende do GitHub Actions, mas espera Docker Compose funcional
+- a validação estrutural é feita por `scripts/check_project_structure.sh`
+- a orquestração final é feita por `scripts/run_final_validation.sh`
+
+[⬆️ Retornar ao índice](#indice)
+
 <a id="status-badge"></a>
 
 ## Status Badge
 
-Os badges deste README já apontam para os workflows corretos, mas ainda usam o placeholder `SEU-USUARIO` no owner do repositório. Depois do push para o GitHub definitivo, basta substituir esse trecho pelo owner real para ativar os badges finais.
+Os badges deste README já apontam para o repositório publicado em `brodyandre/data-quality-api-github-actions-lab`. Se algum badge ainda aparecer vazio por alguns instantes, normalmente basta aguardar a atualização do GitHub após a execução do workflow correspondente.
 
 Exemplo:
 
 ```md
-[![CI](https://github.com/SEU-USUARIO/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](...)
+[![CI](https://github.com/brodyandre/data-quality-api-github-actions-lab/actions/workflows/ci.yml/badge.svg)](...)
 ```
 
 Badges previstos neste projeto:
